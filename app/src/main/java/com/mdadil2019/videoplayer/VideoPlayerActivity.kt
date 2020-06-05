@@ -53,4 +53,14 @@ class VideoPlayerActivity : AppCompatActivity() {
         binding.vm = viewModel
         viewModel.setAdapter(binding.rvVideoPlayer)
     }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.onStop()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onResume()
+    }
 }

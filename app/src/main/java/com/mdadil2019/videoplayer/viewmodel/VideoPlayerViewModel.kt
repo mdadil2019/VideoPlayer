@@ -5,11 +5,12 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.recyclerview.widget.*
+import com.mdadil2019.videoplayer.MediaRepository
 import com.mdadil2019.videoplayer.VideoPlayer
 import com.mdadil2019.videoplayer.adapter.VideoPlayerAdapter
 import com.mdadil2019.videoplayer.callbacks.OnSnapPositionChangeListener
 import com.mdadil2019.videoplayer.callbacks.SnapOnScrollListener
-import com.mdadil2019.videoplayer.model.Media
+import com.mdadil2019.videoplayer.repo.model.Media
 
 
 class VideoPlayerViewModel(private val app : Application) : AndroidViewModel(app), OnSnapPositionChangeListener{
@@ -17,12 +18,16 @@ class VideoPlayerViewModel(private val app : Application) : AndroidViewModel(app
     val videoPlayer : VideoPlayer =
         VideoPlayer(app.applicationContext)
     val adapter : VideoPlayerAdapter
+    val repository : MediaRepository
     var snapView : View? = null
     init {
+        repository = MediaRepository(app.applicationContext)
+
         adapter = VideoPlayerAdapter(
-            getMediaFilesToPlay(),
-            videoPlayer
+            getMediaFilesToPlay(), videoPlayer, repository
         )
+
+
     }
 
     companion object{
@@ -33,7 +38,7 @@ class VideoPlayerViewModel(private val app : Application) : AndroidViewModel(app
         val listOfMedia = arrayListOf<Media>()
 
         getAllMedia().forEach {
-            listOfMedia.add(Media("title",it!!,"if thumbnails", "Video Description"))
+            listOfMedia.add(Media("Video Title",it!!,"thumbnail", "description"))
         }
 
         return listOfMedia
@@ -75,6 +80,13 @@ class VideoPlayerViewModel(private val app : Application) : AndroidViewModel(app
         return ArrayList(videoItemHashSet)
     }
 
+    fun onStop(){
+     videoPlayer.stopVideo()
+    }
+
+    fun onResume(){
+    videoPlayer.onResume()
+    }
 
 
 
@@ -82,6 +94,8 @@ class VideoPlayerViewModel(private val app : Application) : AndroidViewModel(app
         super.onCleared()
         videoPlayer.releaseVideo()
     }
+
+
 
     override fun onSnapPositionChange(position: Int) {
         currentPosition = position

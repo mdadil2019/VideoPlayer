@@ -2,32 +2,45 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
+            name="viewModel"
+            type="com.mdadil2019.videoplayer.adapter.VideoItemViewHolder" />
+
+        <variable
             name="media"
-            type="com.mdadil2019.videoplayer.model.Media" />
+            type="com.mdadil2019.videoplayer.repo.model.Media" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_height="match_parent">
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/tvTitle"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:text="@{media.title}"/>-->
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvBookmark"
+
+            android:textSize="18dp"
+            android:layout_centerHorizontal="true"
+
+            android:onClick="@{()-> viewModel.onBookmarkTapped()}"
+            android:text="@={viewModel.bookmarkText}" />
+
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/exoPlayerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@id/tvBookmark"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/exoPlayerView"
-            android:id="@+id/tvTitle"
-            android:text="@{media.title}"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvTitle"
-            android:text="@{media.description}"/>
     </RelativeLayout>
 
 
